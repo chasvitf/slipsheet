@@ -1,0 +1,348 @@
+{
+ "generated": "2026-10-21",
+ "engine": "tesseract.js 7 (tha+eng) + jsQR + rules",
+ "n": 40,
+ "msMedian": 351,
+ "groups": {
+  "all": {
+   "n": 40,
+   "amountDate": 38,
+   "fields": {
+    "amount": {
+     "ok": 40,
+     "near": 40,
+     "n": 40
+    },
+    "date": {
+     "ok": 38,
+     "near": 38,
+     "n": 40
+    },
+    "time": {
+     "ok": 30,
+     "near": 30,
+     "n": 30
+    },
+    "recipient": {
+     "ok": 35,
+     "near": 40,
+     "n": 40
+    },
+    "sender": {
+     "ok": 28,
+     "near": 28,
+     "n": 30
+    },
+    "ref": {
+     "ok": 36,
+     "near": 40,
+     "n": 40
+    },
+    "memo": {
+     "ok": 20,
+     "near": 20,
+     "n": 25
+    },
+    "category": {
+     "ok": 38,
+     "near": 38,
+     "n": 40
+    }
+   }
+  },
+  "screenshot": {
+   "n": 23,
+   "amountDate": 21,
+   "fields": {
+    "amount": {
+     "ok": 23,
+     "near": 23,
+     "n": 23
+    },
+    "date": {
+     "ok": 21,
+     "near": 21,
+     "n": 23
+    },
+    "time": {
+     "ok": 23,
+     "near": 23,
+     "n": 23
+    },
+    "recipient": {
+     "ok": 20,
+     "near": 23,
+     "n": 23
+    },
+    "sender": {
+     "ok": 22,
+     "near": 22,
+     "n": 23
+    },
+    "ref": {
+     "ok": 23,
+     "near": 23,
+     "n": 23
+    },
+    "memo": {
+     "ok": 15,
+     "near": 15,
+     "n": 19
+    },
+    "category": {
+     "ok": 21,
+     "near": 21,
+     "n": 23
+    }
+   }
+  },
+  "photo": {
+   "n": 17,
+   "amountDate": 17,
+   "fields": {
+    "amount": {
+     "ok": 17,
+     "near": 17,
+     "n": 17
+    },
+    "date": {
+     "ok": 17,
+     "near": 17,
+     "n": 17
+    },
+    "time": {
+     "ok": 7,
+     "near": 7,
+     "n": 7
+    },
+    "recipient": {
+     "ok": 15,
+     "near": 17,
+     "n": 17
+    },
+    "sender": {
+     "ok": 6,
+     "near": 6,
+     "n": 7
+    },
+    "ref": {
+     "ok": 13,
+     "near": 17,
+     "n": 17
+    },
+    "memo": {
+     "ok": 5,
+     "near": 5,
+     "n": 6
+    },
+    "category": {
+     "ok": 17,
+     "near": 17,
+     "n": 17
+    }
+   }
+  },
+  "slip": {
+   "n": 30,
+   "amountDate": 28,
+   "fields": {
+    "amount": {
+     "ok": 30,
+     "near": 30,
+     "n": 30
+    },
+    "date": {
+     "ok": 28,
+     "near": 28,
+     "n": 30
+    },
+    "time": {
+     "ok": 30,
+     "near": 30,
+     "n": 30
+    },
+    "recipient": {
+     "ok": 26,
+     "near": 30,
+     "n": 30
+    },
+    "sender": {
+     "ok": 28,
+     "near": 28,
+     "n": 30
+    },
+    "ref": {
+     "ok": 30,
+     "near": 30,
+     "n": 30
+    },
+    "memo": {
+     "ok": 20,
+     "near": 20,
+     "n": 25
+    },
+    "category": {
+     "ok": 28,
+     "near": 28,
+     "n": 30
+    }
+   }
+  },
+  "receipt": {
+   "n": 10,
+   "amountDate": 10,
+   "fields": {
+    "amount": {
+     "ok": 10,
+     "near": 10,
+     "n": 10
+    },
+    "date": {
+     "ok": 10,
+     "near": 10,
+     "n": 10
+    },
+    "time": null,
+    "recipient": {
+     "ok": 9,
+     "near": 10,
+     "n": 10
+    },
+    "sender": null,
+    "ref": {
+     "ok": 6,
+     "near": 10,
+     "n": 10
+    },
+    "memo": null,
+    "category": {
+     "ok": 10,
+     "near": 10,
+     "n": 10
+    }
+   }
+  }
+ },
+ "misses": [
+  {
+   "file": "slip-04.jpg",
+   "field": "sender",
+   "got": "นางสาว fod มีสุข",
+   "want": "นางสาว ใจดี มีสุข"
+  },
+  {
+   "file": "slip-04.jpg",
+   "field": "memo",
+   "got": "คำไฟ ต.ค.",
+   "want": "ค่าไฟ ต.ค."
+  },
+  {
+   "file": "slip-09.jpg",
+   "field": "memo",
+   "got": "Ath",
+   "want": "ค่าน้ำ"
+  },
+  {
+   "file": "slip-10.jpg",
+   "field": "recipient",
+   "got": "นาย สมชาย ขยันยิง",
+   "want": "นาย สมชาย ขยันยิ่ง"
+  },
+  {
+   "file": "slip-11.jpg",
+   "field": "recipient",
+   "got": "นาย สมชาย ขยันยิง",
+   "want": "นาย สมชาย ขยันยิ่ง"
+  },
+  {
+   "file": "slip-11.jpg",
+   "field": "category",
+   "got": "อื่นๆ",
+   "want": "ค่าแรง"
+  },
+  {
+   "file": "slip-14.jpg",
+   "field": "date",
+   "got": null,
+   "want": "2026-10-07"
+  },
+  {
+   "file": "slip-15.jpg",
+   "field": "memo",
+   "got": "ค่า[ฟ ต.ค.",
+   "want": "ค่าไฟ ต.ค."
+  },
+  {
+   "file": "slip-16.jpg",
+   "field": "recipient",
+   "got": "นาย สมชาย ขยันยิง",
+   "want": "นาย สมชาย ขยันยิ่ง"
+  },
+  {
+   "file": "slip-17.jpg",
+   "field": "sender",
+   "got": "นางสาว ใจดี gu",
+   "want": "นางสาว ใจดี มีสุข"
+  },
+  {
+   "file": "slip-19.jpg",
+   "field": "date",
+   "got": null,
+   "want": "2026-10-16"
+  },
+  {
+   "file": "slip-25.jpg",
+   "field": "recipient",
+   "got": "นาย สมชาย ขยันยิง",
+   "want": "นาย สมชาย ขยันยิ่ง"
+  },
+  {
+   "file": "slip-25.jpg",
+   "field": "category",
+   "got": "อื่นๆ",
+   "want": "ค่าแรง"
+  },
+  {
+   "file": "slip-27.jpg",
+   "field": "memo",
+   "got": "Ath",
+   "want": "ค่าน้ำ"
+  },
+  {
+   "file": "slip-29.jpg",
+   "field": "memo",
+   "got": "mth",
+   "want": "ค่าน้ำ"
+  },
+  {
+   "file": "receipt-02.jpg",
+   "field": "recipient",
+   "got": "ร้าน เครื่องเขียนตวอย่าง",
+   "want": "ร้าน เครื่องเขียนตัวอย่าง"
+  },
+  {
+   "file": "receipt-02.jpg",
+   "field": "ref",
+   "got": "92569-7589",
+   "want": "R2569-7589"
+  },
+  {
+   "file": "receipt-06.jpg",
+   "field": "ref",
+   "got": "92569-1067",
+   "want": "R2569-1067"
+  },
+  {
+   "file": "receipt-08.jpg",
+   "field": "ref",
+   "got": "92569-1433",
+   "want": "R2569-1433"
+  },
+  {
+   "file": "receipt-09.jpg",
+   "field": "ref",
+   "got": "2569-2674",
+   "want": "R2569-2674"
+  }
+ ]
+}

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SlipSheet: ถ่ายสลิปแล้วลงบัญชีให้</title>
+<meta name="description" content="อัปโหลดสลิปโอนเงินหรือใบเสร็จ ระบบอ่านยอด วันที่ ผู้รับ เลขอ้างอิง แล้วลงตารางให้ ก๊อปไปวางใน Google Sheets ได้ ทำงานในเบราว์เซอร์ทั้งหมด ฟรี รูปไม่ออกจากเครื่อง">
+<meta property="og:title" content="SlipSheet: ถ่ายสลิปแล้วลงบัญชีให้">
+<meta property="og:description" content="อ่านสลิปโอนเงินและใบเสร็จภาษาไทยในเบราว์เซอร์ แล้วลงตารางให้ ฟรี รูปไม่ออกจากเครื่อง">
+<meta property="og:image" content="https://slipsheet-th.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@7.0.0/dist/tesseract.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js" defer></script>
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<div class="demo-note">เว็บตัวอย่างเพื่อแสดงผลงาน สลิปตัวอย่างทั้งหมดเป็นของธนาคารและร้านสมมติ</div>
+
+<header class="top">
+  <a class="brand" href="./"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="3" width="22" height="26" rx="3"/><path d="M10 11h12M10 16h12M10 21h7"/></svg>SlipSheet</a>
+  <nav><a href="#ledger">บัญชี</a><a href="#accuracy">ความแม่น</a><a href="https://github.com/chasvitf/slipsheet">GitHub</a></nav>
+</header>
+
+<main>
+  <section class="intro">
+    <h1>ส่งสลิปมา<br>เดี๋ยวลงบัญชีให้</h1>
+    <p>อัปโหลดสลิปโอนเงินหรือใบเสร็จ ระบบจะอ่านยอดเงิน วันที่ ผู้รับ และเลขอ้างอิง แล้วจัดหมวดให้ ตรวจแก้ได้ก่อนลงบัญชี ทุกอย่างทำในเบราว์เซอร์นี้ รูปของคุณไม่ถูกส่งไปที่ไหน</p>
+  </section>
+
+  <section class="desk" aria-label="อ่านสลิป">
+    <div class="viewer" id="viewer">
+      <label class="drop" id="drop">
+        <input type="file" id="file" accept="image/*" multiple>
+        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="5" width="28" height="38" rx="4"/><path d="M17 16h14M17 23h14M17 30h8"/></svg>
+        <strong>วางรูปสลิปตรงนี้ หรือกดเพื่อเลือก</strong>
+        <span>เลือกหลายรูปพร้อมกันได้ ระบบจะลงบัญชีให้ทีละใบ</span>
+      </label>
+      <figure class="scan" id="scan" hidden>
+        <div class="scan-img"><img id="img" alt="สลิปที่กำลังอ่าน"><svg id="marks" aria-hidden="true"></svg></div>
+        <figcaption id="status" role="status">กำลังอ่าน…</figcaption>
+      </figure>
+    </div>
+
+    <form class="fields" id="fields" autocomplete="off">
+      <div class="fields-head">
+        <h2 id="fields-title">ข้อมูลที่อ่านได้</h2>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="grid">
+        <label class="f-amount"><span>จำนวนเงิน (บาท)</span><input name="amount" inputmode="decimal" data-f="amount"></label>
+        <label><span>วันที่</span><input name="date" type="date" data-f="date"></label>
+        <label><span>เวลา</span><input name="time" type="time" data-f="time"></label>
+        <label class="wide"><span>ผู้รับ หรือ ร้าน</span><input name="recipient" data-f="recipient"></label>
+        <label class="wide"><span>ผู้โอน</span><input name="sender" data-f="sender"></label>
+        <label class="wide"><span>บันทึกช่วยจำ</span><input name="memo" data-f="memo"></label>
+        <label><span>หมวด</span><select name="category" data-f="category"></select></label>
+        <label><span>เลขอ้างอิง</span><input name="ref" data-f="ref"></label>
+      </div>
+      <p class="warn" id="dup" hidden></p>
+      <div class="actions">
+        <button type="submit" class="primary" id="add" disabled>ลงบัญชี</button>
+        <button type="button" id="skip" disabled>ข้ามใบนี้</button>
+      </div>
+      <div class="stamp" id="stamp" aria-hidden="true">ลงบัญชีแล้ว</div>
+    </form>
+  </section>
+
+  <section class="samples" aria-labelledby="samples-h">
+    <h2 id="samples-h">ไม่มีสลิปอยู่ในมือ ลองกับสลิปตัวอย่าง</h2>
+    <div class="strip" id="strip"></div>
+  </section>
+
+  <section class="ledger" id="ledger" aria-labelledby="ledger-h">
+    <div class="ledger-head">
+      <h2 id="ledger-h">สมุดบัญชี</h2>
+      <div class="ledger-tools">
+        <button type="button" id="copy" disabled>ก๊อปไปวางใน Google Sheets</button>
+        <button type="button" id="csv" disabled>ดาวน์โหลด CSV</button>
+        <button type="button" id="clear" class="ghost" disabled>ล้างทั้งหมด</button>
+      </div>
+    </div>
+    <div class="summary" id="summary"></div>
+    <div class="page">
+      <table>
+        <thead><tr><th>วันที่</th><th>ผู้รับ / ร้าน</th><th>หมวด</th><th class="num">จำนวนเงิน</th><th><span class="sr">ลบ</span></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p class="empty" id="empty">ยังไม่มีรายการ ลองกดสลิปตัวอย่างด้านบนสักใบ</p>
+    </div>
+    <p class="note">รายการเก็บไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น ปุ่ม "ก๊อปไปวางใน Google Sheets" จะคัดลอกเป็นตาราง เปิดชีตแล้วกดวางได้เลย</p>
+  </section>
+
+  <section class="accuracy" id="accuracy" aria-labelledby="acc-h">
+    <h2 id="acc-h">อ่านถูกแค่ไหน</h2>
+    <p id="acc-lead">วัดจากสลิปและใบเสร็จตัวอย่างชุดเดียวกับด้านบน ด้วยโค้ดเดียวกับที่หน้านี้ใช้</p>
+    <div class="acc-table" id="acc"></div>
+    <div class="limits">
+      <h3>ข้อจำกัดที่ควรรู้</h3>
+      <ul>
+        <li>ชื่อคนไทยบางครั้งวรรณยุกต์หาย เช่น "ยิ่ง" เป็น "ยิง" จึงมีช่องให้ตรวจแก้ก่อนลงบัญชีเสมอ</li>
+        <li>คำสั้นตัวเล็กอย่าง "ค่าน้ำ" อ่านพลาดได้ ถ้าไม่มีบันทึกช่วยจำ ระบบจะเดาหมวดจากชื่อผู้รับแทน</li>
+        <li>เลขอ้างอิงของสลิปมาจาก QR บนสลิป ซึ่งแม่นกว่าการอ่านตัวหนังสือ แต่ไม่ได้ตรวจกับธนาคารว่าสลิปจริงหรือปลอม</li>
+        <li>ชุดทดสอบเป็นสลิปที่สร้างขึ้นเอง สลิปจริงจากแต่ละธนาคารมีหน้าตาต่างกัน งานจริงควรทดสอบกับสลิปของร้านก่อน</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="how-h">
+    <h2 id="how-h">ทำงานอย่างไร</h2>
+    <ol>
+      <li><strong>อ่านตัวหนังสือ</strong> ด้วย Tesseract (ภาษาไทยและอังกฤษ) ที่รันในเบราว์เซอร์</li>
+      <li><strong>อ่าน QR บนสลิป</strong> เพื่อเอาเลขอ้างอิงที่แม่นยำ และเทียบกับเลขที่อ่านได้จากตัวหนังสือ</li>
+      <li><strong>แยกข้อมูล</strong> ด้วยกฎที่รู้จักหน้าตาสลิปไทย เช่น เดือนย่อ พ.ศ. สองหลัก และ "฿" ที่ถูกอ่านเป็นเลข 8</li>
+      <li><strong>กันรายการซ้ำ</strong> เมื่อเลขอ้างอิงตรงกัน หรือยอด วันที่ และเวลาตรงกัน</li>
+    </ol>
+    <p class="cta">อยากได้แบบนี้กับร้านของคุณ เช่น ส่งสลิปใน LINE แล้วเข้า Google Sheets เอง หรือใช้ AI อ่านใบกำกับภาษี <a href="https://fastwork.co/user/chasvitf">ติดต่อผ่าน Fastwork</a></p>
+  </section>
+</main>
+
+<footer>
+  ทำโดย <a href="https://chanavee.vercel.app">Chanavee Pimprong</a>. โค้ดเปิดที่ <a href="https://github.com/chasvitf/slipsheet">GitHub</a> (MIT)
+</footer>
+</body>
+</html>
