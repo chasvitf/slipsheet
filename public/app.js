@@ -297,7 +297,7 @@ fetch("samples/truth.json").then((r) => r.json()).then((truth) => {
   const pickFiles = ["slip-01.jpg", "slip-02.jpg", "slip-03.jpg", "slip-04.jpg", "receipt-02.jpg", "slip-10.jpg", "receipt-01.jpg", "slip-12.jpg"];
   const items = pickFiles.map((f) => truth.find((t) => t.file === f)).filter(Boolean);
   $("strip").innerHTML = items.map((t) => `<button type="button" data-s="${t.file}">
-      <img src="samples/${t.file}" alt="${t.kind === "receipt" ? "ใบเสร็จ" : "สลิป"}ตัวอย่าง ${esc(t.recipient)}" loading="lazy" width="104" height="150">
+      <img src="samples/thumb/${t.file}" alt="${t.kind === "receipt" ? "ใบเสร็จ" : "สลิป"}ตัวอย่าง ${esc(t.recipient)}" loading="lazy" width="104" height="150">
       ${t.kind === "receipt" ? "ใบเสร็จ" : t.condition === "photo" ? "ภาพถ่าย" : "แคปหน้าจอ"}</button>`).join("")
     + `<button type="button" class="more" id="all8">ลงทั้ง ${items.length} ใบ</button>`;
   $("strip").addEventListener("click", (e) => {
